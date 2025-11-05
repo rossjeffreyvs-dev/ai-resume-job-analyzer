@@ -1,0 +1,100 @@
+# ============================================================
+#  AI Resume Match App - Git Ignore
+#  Environment: Python / Flask / Docker / AWS Lightsail / PyCharm
+# ============================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# --- Virtual Environment ---
+venv/
+env/
+ENV/
+.venv/
+.Python
+
+# --- OS / System Files ---
+.DS_Store
+Thumbs.db
+
+# --- Environment Variables ---
+.env
+*.key
+*.pem
+
+# --- Logs and Reports ---
+*.log
+logs/
+*.out
+*.err
+
+# --- IDE / Editors ---
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Uploaded / Generated Data ---
+uploads/
+*.pdf
+*.tmp
+*.bak
+
+# --- Build & Deployment Artifacts ---
+*.tar
+*.lock
+*.pkg
+lightsailctl
+lightsail.resolved.yaml
+# Lightsail build cache or deployment leftovers
+.aws/
+.aws-sam/
+
+# --- Docker ---
+docker-compose.override.yml
+*.pid
+*.seed
+*.pid.lock
+
+# --- Coverage / Testing ---
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+.cache
+.pytest_cache/
+
+# --- Distribution / Packaging ---
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Node / Frontend (if later added) ---
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# --- Temporary / Misc ---
+*.bak
+*.tmp
+*.orig
+*.old
+*.swp
+*.swo
+*.save

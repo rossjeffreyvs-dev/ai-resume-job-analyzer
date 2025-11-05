@@ -1,0 +1,9 @@
+serviceName: ai-resume-match
+containers:
+  ai-resume-match:
+    image: :ai-resume-match.ai-resume-match.17
+    ports:
+      "5000": HTTP
+publicEndpoint:
+  containerName: ai-resume-match
+  containerPort: 5000
