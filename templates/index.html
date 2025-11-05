@@ -94,6 +94,34 @@
       font-size: 1.1rem;
     }
 
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      background: white;
+      color: #111827;
+      transition: all 0.25s ease;
+    }
+
+    .tab-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .tab-btn.active {
+      background: #111827;
+      color: white;
+      border-color: #111827;
+    }
+
     .card {
       background: #fff;
       border-radius: 1rem;
@@ -102,6 +130,14 @@
       width: 90%;
       max-width: 700px;
       margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .card.active {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     form {
@@ -116,7 +152,7 @@
       padding: 0.75rem;
       font-size: 1rem;
       font-family: inherit;
-      min-height: 250px;
+      min-height: 150px;
       resize: vertical;
     }
 
@@ -192,6 +228,8 @@
       line-height: 1.6;
     }
 
+    .hidden { display: none; }
+
     .match-item {
       margin-bottom: 0.75rem;
       background: white;
@@ -255,10 +293,16 @@
     <p>Compare your résumé to any job description using AI</p>
   </header>
 
-  <div class="card">
-    <form method="post" enctype="multipart/form-data" onsubmit="startProgress()">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('demo')">Demo</button>
+    <button class="tab-btn" onclick="showTab('description')">Project Description</button>
+  </div>
+
+  <div id="demo" class="card active">
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateFileType() && startProgress()">
       <textarea name="job_desc" placeholder="Paste the job description here..." required></textarea>
-      <input type="file" name="resume_file" accept=".pdf" required />
+      <input type="file" name="resume_file" id="resume_file" accept=".pdf,.docx" required />
+      <p class="text-sm text-gray-500 mt-1">Accepted file types: <strong>PDF, DOCX</strong></p>
       <button id="analyzeBtn" type="submit">Analyze Match</button>
       <div id="progressBar" class="progress-bar"></div>
     </form>
@@ -313,33 +357,73 @@
     {% endif %}
   </div>
 
+
+  <div id="description" class="card hidden">
+    <h2>Project Description</h2>
+    <p><strong>AI Résumé Match</strong> helps candidates instantly compare their résumé to job descriptions using GPT-4 AI. It highlights matched and missing skills clearly.</p>
+    <h3>Tech Stack</h3>
+    <ul>
+      <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+      <li><strong>Backend:</strong> Flask (Python)</li>
+      <li><strong>AI Model:</strong> OpenAI GPT-4o</li>
+      <li><strong>Deployment:</strong> Docker + AWS Lightsail</li>
+    </ul>
+    <h3>Key Takeaways</h3>
+    <ul>
+      <li>Seamless integration of Flask with OpenAI API</li>
+      <li>File upload handling for PDF and DOCX</li>
+      <li>Responsive modern UI and progress animation</li>
+      <li>Deployed successfully on AWS Lightsail Container Service</li>
+    </ul>
+  </div>
+
   <footer>
     Built by <a href="https://www.jeffrey-ross.me" target="_blank" style="color:#2563eb;text-decoration:none;">Jeffrey Ross</a>
   </footer>
 
   <script>
+    function validateFileType() {
+      const fileInput = document.getElementById('resume_file');
+      const filePath = fileInput.value;
+      const allowedExtensions = /\.(pdf|docx)$/i;
+      if (!allowedExtensions.exec(filePath)) {
+        alert('❌ Invalid file type! Please upload a PDF or DOCX file only.');
+        fileInput.value = '';
+        return false;
+      }
+      return true;
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+      document.getElementById('demo').classList.add('hidden');
+      document.getElementById('description').classList.add('hidden');
+      document.getElementById(tabId).classList.remove('hidden');
+      setTimeout(() => document.getElementById(tabId).classList.add('active'), 20);
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab-btn[onclick="showTab('${tabId}')"]`).classList.add('active');
+    }
+
     function startProgress() {
       const btn = document.getElementById('analyzeBtn');
       const bar = document.getElementById('progressBar');
       btn.classList.add('loading');
       btn.textContent = '';
-
       bar.style.opacity = 1;
       bar.classList.remove('fade-out');
       bar.style.width = '0%';
-
       let width = 0;
       const interval = setInterval(() => {
         width += Math.random() * 10;
         if (width >= 90) width = 90;
         bar.style.width = width + '%';
       }, 400);
-
       setTimeout(() => {
         clearInterval(interval);
         bar.style.width = '100%';
         setTimeout(() => bar.classList.add('fade-out'), 1000);
       }, 15000);
+      return true;
     }
   </script>
 </body>

@@ -33,8 +33,8 @@ fi
 # --- 4. Get latest registered image reference ---
 echo "🔍 Fetching latest image version from Lightsail registry..."
 LATEST_IMAGE=$(aws lightsail get-container-images \
-  --service-name $SERVICE_NAME \
-  --query 'containerImages[-1].image' \
+  --service-name ai-resume-match \
+  --query 'reverse(sort_by(containerImages, &createdAt))[0].image' \
   --output text)
 
 if [ -z "$LATEST_IMAGE" ] || [ "$LATEST_IMAGE" = "None" ]; then
