@@ -1,7 +1,7 @@
 serviceName: ai-resume-match
 containers:
   ai-resume-match:
-    image: :ai-resume-match.ai-resume-match.20
+    image: :ai-resume-match.ai-resume-match.21
     environment:
       OPENAI_API_KEY: "${OPENAI_API_KEY}"
     ports:

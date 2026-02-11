@@ -1,339 +1,619 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Résumé Match | JR Projects</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Résumé Match | JR Projects</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="icon" href="https://www.jeffrey-ross.me/favicon.ico" />
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="https://www.jeffrey-ross.me/favicon.ico" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f9fafb;
-      color: #111827;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      scroll-behavior: smooth;
-    }
+    <style>
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background-color: #f9fafb;
+        color: #111827;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        scroll-behavior: smooth;
+      }
 
-    nav {
-      width: 100%;
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+      nav {
+        width: 100%;
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
 
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0.75rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0.75rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 600;
-      font-size: 1.25rem;
-      color: #111827;
-      text-decoration: none;
-    }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: #111827;
+        text-decoration: none;
+      }
 
-    .nav-left span.logo {
-      border: 2px solid #111827;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      font-weight: 700;
-    }
+      .nav-left span.logo {
+        border: 2px solid #111827;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-weight: 700;
+      }
 
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1.75rem;
-    }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1.75rem;
+      }
 
-    .nav-right a {
-      color: #374151;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: color 0.2s ease;
-    }
+      .nav-right a {
+        color: #374151;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+      }
 
-    .nav-right a:hover,
-    .nav-right a.active {
-      color: #111827;
-      text-decoration: underline;
-      text-underline-offset: 6px;
-    }
+      .nav-right a:hover,
+      .nav-right a.active {
+        color: #111827;
+        text-decoration: underline;
+        text-underline-offset: 6px;
+      }
 
-    header {
-      text-align: center;
-      margin: 3rem 0 1rem;
-    }
+      header {
+        text-align: center;
+        margin: 1.1rem 0 1rem;
+      }
 
-    header h1 {
-      font-size: 2.25rem;
-      font-weight: 600;
-    }
+      header h1 {
+        font-size: 2.25rem;
+        font-weight: 600;
+      }
 
-    header p {
-      color: #6b7280;
-      font-size: 1.1rem;
-    }
+      header p {
+        color: #6b7280;
+        font-size: 1.1rem;
+      }
 
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
+      .case-study p,
+      li {
+        font-size: 0.8rem;
+      }
 
-    .tab-btn {
-      padding: 0.6rem 1.25rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      border: 1px solid #d1d5db;
-      cursor: pointer;
-      background: white;
-      color: #111827;
-      transition: all 0.25s ease;
-    }
+      .case-study h2 {
+        margin-top: 0rem;
+      }
 
-    .tab-btn:hover {
-      background: #f3f4f6;
-    }
+      .case-study h3 {
+        color: #2563eb;
+        font-size: 1rem;
+        margin-top: 1.25rem;
+        margin-bottom: 0.25rem;
+      }
 
-    .tab-btn.active {
-      background: #111827;
-      color: white;
-      border-color: #111827;
-    }
+      .case-study h3 + p {
+        margin-top: 0rem;
+      }
 
-    .card {
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-      padding: 2rem;
-      width: 90%;
-      max-width: 700px;
-      margin-bottom: 2rem;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
+      .case-study h4 {
+        margin: 0rem;
+        padding: 0rem;
+      }
 
-    .card.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
+      .case-study ul {
+        margin: 0rem;
+        padding: 0rem;
+        padding-left: 1rem;
+      }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+      .case-study h4 {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+      }
+      .case-study h4 + p {
+        margin-top: 0;
+      }
 
-    textarea {
-      border: 1px solid #e5e7eb;
-      border-radius: 0.5rem;
-      padding: 0.75rem;
-      font-size: 1rem;
-      font-family: inherit;
-      min-height: 150px;
-      resize: vertical;
-    }
+      .case-study h2 + section {
+        margin-top: 0rem;
+        margin-bottom: 0rem;
+      }
 
-    input[type="file"] {
-      border: 1px solid #e5e7eb;
-      border-radius: 0.5rem;
-      padding: 0.75rem;
-      background: #f9fafb;
-    }
+      .case-study section {
+        margin: 0rem;
+      }
 
-    button {
-      background-color: #111827;
-      color: white;
-      border: none;
-      padding: 0.9rem 1.25rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
-    }
+      .case-study section section {
+        margin-top: 0rem;
+        margin-left: 1rem;
+      }
 
-    button:hover {
-      background-color: #2563eb;
-    }
+      .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
 
-    button.loading {
-      background-color: #1f2937;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
+      .tab-btn {
+        padding: 0.6rem 1.25rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        border: 1px solid #d1d5db;
+        cursor: pointer;
+        background: white;
+        color: #111827;
+        transition: all 0.25s ease;
+      }
 
-    button.loading::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 1.2rem;
-      height: 1.2rem;
-      margin: -0.6rem 0 0 -0.6rem;
-      border: 2px solid white;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+      .tab-btn:hover {
+        background: #f3f4f6;
+      }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+      .tab-btn.active {
+        background-color: #2563eb;
+        color: white;
+        border-color: #111827;
+      }
 
-    .progress-bar {
-      width: 0%;
-      height: 4px;
-      background: #2563eb;
-      border-radius: 2px;
-      margin-top: 0.5rem;
-      opacity: 1;
-      transition: width 1s ease, opacity 0.6s ease;
-    }
+      .card {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        width: 90%;
+        max-width: 700px;
+        margin-bottom: 2rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease;
+      }
 
-    .progress-bar.fade-out {
-      opacity: 0;
-    }
+      .card.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-    .result {
-      margin-top: 2rem;
-      background-color: #f3f4f6;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
 
-    .hidden { display: none; }
+      textarea {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-family: inherit;
+        min-height: 150px;
+        resize: vertical;
+      }
 
-    .match-item {
-      margin-bottom: 0.75rem;
-      background: white;
-      border-radius: 0.5rem;
-      padding: 0.75rem 1rem;
-      border-left: 4px solid #22c55e;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-      opacity: 0;
-      transform: translateY(10px);
-    }
+      /* ===== Unified primary button styling (Analyze Match + Upload Zone) ===== */
+      .primary-btn {
+        background-color: #111827;
+        color: white;
+        border: none;
+        padding: 0.9rem 1.25rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+      }
 
-    .match-item.not {
-      border-left-color: #ef4444;
-    }
+      .primary-btn:hover {
+        background-color: #2563eb;
+      }
 
-    .match-item span.icon {
-      font-size: 1.3rem;
-      flex-shrink: 0;
-      color: #22c55e;
-    }
+      .primary-btn.loading {
+        background-color: #1f2937;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
 
-    .match-item.not span.icon {
-      color: #ef4444;
-    }
+      .primary-btn.loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1.2rem;
+        height: 1.2rem;
+        margin: -0.6rem 0 0 -0.6rem;
+        border: 2px solid white;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
 
-    @keyframes fadeInSeq {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+      /* ===== Drag-and-drop upload zone (styled exactly like primary button) ===== */
+      .upload-zone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        text-align: center;
+        user-select: none;
+      }
 
-    footer {
-      margin-top: auto;
-      margin-bottom: 1rem;
-      color: #9ca3af;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-  </style>
-</head>
+      .upload-zone small {
+        display: block;
+        opacity: 0.85;
+        font-weight: 400;
+        margin-top: 0.15rem;
+      }
 
-<body>
-  <nav>
-    <div class="nav-container">
-      <a href="https://www.jeffrey-ross.me" class="nav-left">
-        <span class="logo">JR</span> Projects
-      </a>
-      <div class="nav-right">
-        <a href="https://www.jeffrey-ross.me">Home</a>
-        <a href="https://www.jeffrey-ross.me/projects" class="active">Projects</a>
-        <a href="https://www.jeffrey-ross.me/blog">Blog</a>
-        <a href="https://www.jeffrey-ross.me/about">About</a>
-        <a href="https://www.jeffrey-ross.me/contact">Contact</a>
+      .upload-zone.dragover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(37, 99, 235, 0.15);
+      }
+
+      /* File name "selected" animation */
+      .file-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #f3f4f6;
+        color: #111827;
+        border: 1px solid #e5e7eb;
+        border-radius: 999px;
+        padding: 0.45rem 0.75rem;
+        font-size: 0.95rem;
+        line-height: 1;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .file-pill .name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 520px;
+      }
+
+      .file-pill .clear {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 1.05rem;
+        line-height: 1;
+        opacity: 0.7;
+        padding: 0;
+      }
+
+      .file-pill .clear:hover {
+        opacity: 1;
+      }
+
+      .file-animate-in {
+        animation: fileIn 0.35s ease forwards;
+      }
+
+      @keyframes fileIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      button {
+        /* keep existing button selector for other buttons if needed */
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .progress-bar {
+        width: 0%;
+        height: 4px;
+        background: #2563eb;
+        border-radius: 2px;
+        margin-top: 0.5rem;
+        opacity: 1;
+        transition:
+          width 1s ease,
+          opacity 0.6s ease;
+      }
+
+      .progress-bar.fade-out {
+        opacity: 0;
+      }
+
+      .result {
+        margin-top: 2rem;
+        background-color: #f3f4f6;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .match-item {
+        margin-bottom: 0.75rem;
+        background: white;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        border-left: 4px solid #22c55e;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      .match-item.not {
+        border-left-color: #ef4444;
+      }
+
+      .match-item span.icon {
+        font-size: 1.3rem;
+        flex-shrink: 0;
+        color: #22c55e;
+      }
+
+      .match-item.not span.icon {
+        color: #ef4444;
+      }
+
+      @keyframes fadeInSeq {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      footer {
+        margin-top: auto;
+        margin-bottom: 1rem;
+        color: #9ca3af;
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      /* small helper text styling (your existing class is not defined; keep it simple) */
+      .helper-text {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-top: -0.35rem;
+      }
+
+      .file-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-top: -0.35rem;
+      }
+
+      /* ✅ NEW: put "Choose resume" and "Use sample" side-by-side, 50/50 */
+      .dual-action-row {
+        display: flex;
+        gap: 0.75rem;
+        width: 100%;
+      }
+
+      .dual-action-row > * {
+        flex: 1 1 0;
+        width: 50%;
+      }
+
+      /* Ensure both controls fill their half */
+      .dual-action-row .primary-btn {
+        width: 100%;
+      }
+
+      /* ✅ NEW: blue background for sample button */
+      .sample-btn {
+        background-color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .sample-btn:hover {
+        background-color: #1d4ed8;
+      }
+
+      @media (max-width: 640px) {
+        .dual-action-row {
+          flex-direction: column;
+        }
+        .dual-action-row > * {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="case-study">
+    <nav>
+      <div class="nav-container">
+        <a href="https://www.jeffrey-ross.me" class="nav-left">
+          <span class="logo">JR</span> Projects
+        </a>
+        <div class="nav-right">
+          <a href="https://www.jeffrey-ross.me">Home</a>
+          <a href="https://www.jeffrey-ross.me/projects" class="active"
+            >Projects</a
+          >
+          <a href="https://www.jeffrey-ross.me/blog">Blog</a>
+          <a href="https://www.jeffrey-ross.me/about">About</a>
+          <a href="https://www.jeffrey-ross.me/contact">Contact</a>
+        </div>
       </div>
+    </nav>
+
+    <header>
+      <h1>AI Résumé Match</h1>
+      <p>Compare your résumé to any job description using AI</p>
+    </header>
+
+    <div class="tabs">
+      <button
+        class="tab-btn {{ 'active' if active_tab != 'demo' else '' }}"
+        onclick="showTab('description')"
+        type="button"
+      >
+        Project Description
+      </button>
+      <button
+        class="tab-btn {{ 'active' if active_tab == 'demo' else '' }}"
+        onclick="showTab('demo')"
+        type="button"
+      >
+        Demo
+      </button>
     </div>
-  </nav>
 
-  <header>
-    <h1>AI Résumé Match</h1>
-    <p>Compare your résumé to any job description using AI</p>
-  </header>
+    <div
+      id="demo"
+      class="card {{ '' if active_tab == 'demo' else 'hidden' }} {{ 'active' if active_tab == 'demo' else '' }}"
+    >
+      <!-- ✅ Optional: show errors (doesn’t affect your animations) -->
+      {% if error %}
+      <div style="margin-top: 0.75rem; color: #991b1b; font-weight: 600">
+        {{ error }}
+      </div>
+      {% endif %}
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('demo')">Demo</button>
-    <button class="tab-btn" onclick="showTab('description')">Project Description</button>
-  </div>
+      <!-- Main form -->
+      <form
+        id="matchForm"
+        method="post"
+        enctype="multipart/form-data"
+        onsubmit="return handleSubmit(event);"
+      >
+        <textarea
+          name="job_desc"
+          placeholder="Paste the job description here..."
+          required
+        >
+{{ job_desc or "" }}</textarea
+        >
 
-  <div id="demo" class="card active">
-    <form method="post" enctype="multipart/form-data" onsubmit="return validateFileType() && startProgress()">
-      <textarea name="job_desc" placeholder="Paste the job description here..." required></textarea>
-      <input type="file" name="resume_file" id="resume_file" accept=".pdf,.docx" required />
-      <p class="text-sm text-gray-500 mt-1">Accepted file types: <strong>PDF, DOCX</strong></p>
-      <button id="analyzeBtn" type="submit">Analyze Match</button>
-      <div id="progressBar" class="progress-bar"></div>
-    </form>
+        <!-- ✅ UPDATED: 50/50 row: Choose resume (left) + Use sample (right) -->
+        <div class="dual-action-row">
+          <!-- Choose resume (upload zone) -->
+          <label
+            for="resume_file"
+            id="uploadZone"
+            class="primary-btn upload-zone"
+            title="Choose resume file"
+          >
+            <span>Choose resume file</span>
+            <small>(or drag & drop here)</small>
+          </label>
 
-    {% if match_report %}
-      <div id="rawResult" style="display:none;">{{ match_report | safe }}</div>
+          <!-- Use sample (submits to /demo) -->
+          <button
+            id="demoBtn"
+            class="primary-btn sample-btn"
+            type="submit"
+            formaction="/demo"
+            formmethod="post"
+            formnovalidate
+          >
+            Use sample job description and resume
+          </button>
+        </div>
+
+        <!-- Native file input hidden -->
+        <input
+          type="file"
+          name="resume_file"
+          id="resume_file"
+          accept=".pdf,.docx"
+          required
+          hidden
+        />
+
+        <!-- Animated filename / clear control -->
+        <div class="file-meta">
+          <p class="helper-text">
+            Accepted file types: <strong>PDF, DOCX</strong>
+          </p>
+          <div id="fileInfo" class="hidden"></div>
+        </div>
+
+        <!-- Analyze button -->
+        <button id="analyzeBtn" class="primary-btn" type="submit">
+          Analyze Match
+        </button>
+
+        <div id="progressBar" class="progress-bar"></div>
+      </form>
+
+      {% if match_report %}
+      <div id="rawResult" style="display: none">{{ match_report | safe }}</div>
       <div id="styledResult" class="result">
         <h3><strong>Results:</strong></h3>
       </div>
 
       <script>
-        const raw = document.getElementById('rawResult').innerText.trim();
-        const container = document.getElementById('styledResult');
-        const bar = document.getElementById('progressBar');
-        const btn = document.getElementById('analyzeBtn');
+        const raw = document.getElementById("rawResult").innerText.trim();
+        const container = document.getElementById("styledResult");
+        const bar = document.getElementById("progressBar");
+        const btn = document.getElementById("analyzeBtn");
 
         const html = marked.parse(raw);
-        const tempDiv = document.createElement('div');
+        const tempDiv = document.createElement("div");
         tempDiv.innerHTML = html;
 
-        const lines = tempDiv.innerText.split('\n').filter(l => l.trim());
+        const lines = tempDiv.innerText.split("\n").filter((l) => l.trim());
         let delay = 0;
 
-        lines.forEach(line => {
-          const item = document.createElement('div');
-          if (line.includes('✔️')) {
-            item.className = 'match-item';
-            item.innerHTML = `<span class="icon">✔️</span><div>${line.replace('✔️', '').trim()}</div>`;
-          } else if (line.includes('❌')) {
-            item.className = 'match-item not';
-            item.innerHTML = `<span class="icon">❌</span><div>${line.replace('❌', '').trim()}</div>`;
+        lines.forEach((line) => {
+          const item = document.createElement("div");
+          if (line.includes("✔️")) {
+            item.className = "match-item";
+            item.innerHTML = `<span class="icon">✔️</span><div>${line.replace("✔️", "").trim()}</div>`;
+          } else if (line.includes("❌")) {
+            item.className = "match-item not";
+            item.innerHTML = `<span class="icon">❌</span><div>${line.replace("❌", "").trim()}</div>`;
           } else return;
 
           item.style.animation = `fadeInSeq 0.5s ease forwards ${delay}s`;
@@ -343,88 +623,398 @@
 
         // Fade out progress bar, reset button, and scroll to results
         if (bar) {
-          bar.style.width = '100%';
+          bar.style.width = "100%";
           setTimeout(() => {
-            bar.classList.add('fade-out');
+            bar.classList.add("fade-out");
             setTimeout(() => {
-              container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              btn.classList.remove('loading');
-              btn.textContent = 'Analyze Match';
+              container.scrollIntoView({ behavior: "smooth", block: "start" });
+              btn.classList.remove("loading");
+              btn.textContent = "Analyze Match";
             }, 600);
           }, 700);
         }
       </script>
-    {% endif %}
-  </div>
+      {% endif %}
+    </div>
 
+    <div
+      id="description"
+      class="card {{ '' if active_tab != 'demo' else 'hidden' }} {{ 'active' if active_tab != 'demo' else '' }}"
+    >
+      <h2>
+        <strong>AI-Assisted Résumé Match</strong>
+      </h2>
 
-  <div id="description" class="card hidden">
-    <h2>Project Description</h2>
-    <p><strong>AI Résumé Match</strong> helps candidates instantly compare their résumé to job descriptions using GPT-4 AI. It highlights matched and missing skills clearly.</p>
-    <h3>Tech Stack</h3>
-    <ul>
-      <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
-      <li><strong>Backend:</strong> Flask (Python)</li>
-      <li><strong>AI Model:</strong> OpenAI GPT-4o</li>
-      <li><strong>Deployment:</strong> Docker + AWS Lightsail</li>
-    </ul>
-    <h3>Key Takeaways</h3>
-    <ul>
-      <li>Seamless integration of Flask with OpenAI API</li>
-      <li>File upload handling for PDF and DOCX</li>
-      <li>Responsive modern UI and progress animation</li>
-      <li>Deployed successfully on AWS Lightsail Container Service</li>
-    </ul>
-  </div>
+      <section id="overview">
+        <h3>Overview</h3>
+        <p>
+          AI Résumé Match is a
+          <strong>generative AI web application</strong> that helps candidates
+          quickly evaluate how well their résumé aligns with a job description.
+          Users upload a résumé and paste a job posting, and the system returns
+          a clear breakdown of matched skills, missing qualifications, and
+          explanatory context using large language models.
+        </p>
+        <p>
+          Beyond the end-user functionality, this project also served as a case
+          study in AI-assisted software development, using
+          <strong>Claude Code as an in-repo pair programmer</strong> to
+          accelerate refactoring, debugging, and deployment.
+        </p>
+      </section>
 
-  <footer>
-    Built by <a href="https://www.jeffrey-ross.me" target="_blank" style="color:#2563eb;text-decoration:none;">Jeffrey Ross</a>
-  </footer>
+      <section id="problem">
+        <h3>Problem</h3>
+        <p>
+          As the application evolved, the codebase grew to include multiple
+          routes, parsing paths (PDF/DOCX), UI states, and deployment
+          configurations. Making cross-cutting changes—while preserving behavior
+          and testability—became increasingly time-consuming and error-prone.
+        </p>
+      </section>
 
-  <script>
-    function validateFileType() {
-      const fileInput = document.getElementById('resume_file');
-      const filePath = fileInput.value;
-      const allowedExtensions = /\.(pdf|docx)$/i;
-      if (!allowedExtensions.exec(filePath)) {
-        alert('❌ Invalid file type! Please upload a PDF or DOCX file only.');
-        fileInput.value = '';
-        return false;
+      <section id="why-claude-code">
+        <h3>Why Claude Code</h3>
+        <p>
+          I used Claude Code from Anthropic because it operates directly inside
+          the repository, understands cross-file dependencies, and can run and
+          react to real command output—unlike chat-only coding assistants.
+        </p>
+        <p>
+          This allowed me to safely iterate on a real production codebase rather
+          than isolated snippets.
+        </p>
+      </section>
+
+      <section id="how-claude-code-was-used">
+        <h3>How Claude Code Was Used</h3>
+
+        <ul>
+          <li>
+            <h4>Repo-aware refactoring</h4>
+            <p>
+              Claude Code analyzed the full project structure and proposed
+              multi-file refactors to consolidate duplicated logic across résumé
+              parsing, request handling, and response formatting—while
+              preserving existing interfaces.
+            </p>
+          </li>
+
+          <li>
+            <h4>Command-loop debugging</h4>
+            <p>
+              I used Claude Code to run the application locally, inspect runtime
+              and container logs, and iteratively fix issues based on actual
+              execution output rather than static analysis.
+            </p>
+          </li>
+
+          <li>
+            <h4>Safe, reviewable changes</h4>
+            <p>
+              All suggested updates were surfaced as diffs and manually reviewed
+              before applying, ensuring full developer control over production
+              code.
+            </p>
+          </li>
+
+          <li>
+            <h4>Deployment validation</h4>
+            <p>
+              Claude Code assisted with Docker and AWS Lightsail configuration
+              changes, validating container behavior during build and runtime.
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section id="technical-architecture">
+        <h3>Technical Architecture</h3>
+
+        <ul>
+          <li>
+            <h4>Frontend</h4>
+            <ul>
+              <li>HTML, CSS, JavaScript</li>
+              <li>
+                Responsive UI with progress animations for file upload and
+                analysis
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h4>Backend</h4>
+            <ul>
+              <li>Flask (Python)</li>
+              <li>PDF and DOCX résumé parsing</li>
+              <li>Structured prompt orchestration</li>
+            </ul>
+          </li>
+
+          <li>
+            <h4>AI Model</h4>
+            <ul>
+              <li>OpenAI GPT-4o for skill extraction and comparison</li>
+            </ul>
+          </li>
+
+          <li>
+            <h4>Deployment</h4>
+            <ul>
+              <li>Dockerized application</li>
+              <li>AWS Lightsail Container Service</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="results-impact">
+        <h3>Results &amp; Impact</h3>
+        <ul>
+          <li>Reduced duplicated backend logic by ~40%</li>
+          <li>
+            Accelerated refactoring and debugging cycles from hours to minutes
+          </li>
+          <li>
+            Improved clarity and maintainability of résumé parsing and analysis
+            flow
+          </li>
+          <li>
+            Successfully deployed and validated in a containerized production
+            environment
+          </li>
+        </ul>
+      </section>
+
+      <section id="key-takeaways">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>
+            AI tools are most effective when used inside the development
+            workflow, not alongside it
+          </li>
+          <li>
+            Claude Code functioned as a context-aware implementation assistant,
+            allowing focus on architecture and product decisions rather than
+            mechanical refactors
+          </li>
+          <li>
+            Human-in-the-loop review remains critical for safe, production-grade
+            AI-assisted development
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <footer>
+      Built by
+      <a
+        href="https://www.jeffrey-ross.me"
+        target="_blank"
+        style="color: #2563eb; text-decoration: none"
+        >Jeffrey Ross</a
+      >
+    </footer>
+
+    <script>
+      // ✅ NEW: Route-aware submit handler (keeps existing behavior)
+      // - If user clicked "Use Sample..." -> skip file validation, just run progress + submit to /demo
+      // - Otherwise -> run normal validation + progress
+      function handleSubmit(e) {
+        const submitter = e && e.submitter;
+        const isDemo = submitter && submitter.id === "demoBtn";
+
+        if (isDemo) {
+          return startProgress();
+        }
+        return validateFileType() && startProgress();
       }
-      return true;
-    }
 
-    function showTab(tabId) {
-      document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
-      document.getElementById('demo').classList.add('hidden');
-      document.getElementById('description').classList.add('hidden');
-      document.getElementById(tabId).classList.remove('hidden');
-      setTimeout(() => document.getElementById(tabId).classList.add('active'), 20);
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`.tab-btn[onclick="showTab('${tabId}')"]`).classList.add('active');
-    }
+      // ===== File validation updated to work with hidden input + drag & drop =====
+      function validateFileType() {
+        const fileInput = document.getElementById("resume_file");
+        const file = fileInput.files && fileInput.files[0];
+        const allowedExtensions = /\.(pdf|docx)$/i;
 
-    function startProgress() {
-      const btn = document.getElementById('analyzeBtn');
-      const bar = document.getElementById('progressBar');
-      btn.classList.add('loading');
-      btn.textContent = '';
-      bar.style.opacity = 1;
-      bar.classList.remove('fade-out');
-      bar.style.width = '0%';
-      let width = 0;
-      const interval = setInterval(() => {
-        width += Math.random() * 10;
-        if (width >= 90) width = 90;
-        bar.style.width = width + '%';
-      }, 400);
-      setTimeout(() => {
-        clearInterval(interval);
-        bar.style.width = '100%';
-        setTimeout(() => bar.classList.add('fade-out'), 1000);
-      }, 15000);
-      return true;
-    }
-  </script>
-</body>
+        if (!file) {
+          alert("❌ Please choose a resume file (PDF or DOCX).");
+          return false;
+        }
+
+        if (!allowedExtensions.test(file.name)) {
+          alert("❌ Invalid file type! Please upload a PDF or DOCX file only.");
+          clearSelectedFile();
+          return false;
+        }
+        return true;
+      }
+
+      // ===== Tabs =====
+      function showTab(tabId) {
+        try {
+          localStorage.setItem("ai-resume-match.activeTab", tabId);
+        } catch (e) {
+          // ignore storage issues (private browsing, etc.)
+        }
+
+        // Keep URL in sync so refresh/share preserves the selected tab
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("tab", tabId);
+          window.history.replaceState({}, "", url.toString());
+        } catch (e) {
+          // ignore URL manipulation issues
+        }
+        document
+          .querySelectorAll(".card")
+          .forEach((card) => card.classList.remove("active"));
+        document.getElementById("demo").classList.add("hidden");
+        document.getElementById("description").classList.add("hidden");
+        document.getElementById(tabId).classList.remove("hidden");
+        setTimeout(
+          () => document.getElementById(tabId).classList.add("active"),
+          20,
+        );
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document
+          .querySelector(`.tab-btn[onclick="showTab('${tabId}')"]`)
+          .classList.add("active");
+      }
+
+      // Restore active tab after full page reloads (e.g., POST->render)
+      (function restoreActiveTab() {
+        const serverPreferredTab = "{{ active_tab or '' }}";
+        let tab = "";
+        try {
+          tab = localStorage.getItem("ai-resume-match.activeTab") || "";
+        } catch (e) {
+          tab = "";
+        }
+
+        // URL override (handy for debugging / deep-linking)
+        const params = new URLSearchParams(window.location.search);
+        const urlTab = params.get("tab") || "";
+
+        const resolved = (
+          urlTab ||
+          tab ||
+          serverPreferredTab ||
+          "description"
+        ).toLowerCase();
+        const finalTab = resolved === "demo" ? "demo" : "description";
+        // Run after initial paint so the transition classes behave nicely.
+        // Note: this script is at the end of <body>, so DOMContentLoaded may
+        // already have fired on some browsers; handle both cases.
+        if (document.readyState === "loading") {
+          window.addEventListener("DOMContentLoaded", () => showTab(finalTab));
+        } else {
+          showTab(finalTab);
+        }
+      })();
+
+      // ===== Progress =====
+      function startProgress() {
+        const btn = document.getElementById("analyzeBtn");
+        const bar = document.getElementById("progressBar");
+        if (btn) {
+          btn.classList.add("loading");
+          btn.textContent = "";
+        }
+        if (bar) {
+          bar.style.opacity = 1;
+          bar.classList.remove("fade-out");
+          bar.style.width = "0%";
+          let width = 0;
+          const interval = setInterval(() => {
+            width += Math.random() * 10;
+            if (width >= 90) width = 90;
+            bar.style.width = width + "%";
+          }, 400);
+          setTimeout(() => {
+            clearInterval(interval);
+            bar.style.width = "100%";
+            setTimeout(() => bar.classList.add("fade-out"), 1000);
+          }, 15000);
+        }
+        return true;
+      }
+
+      // ===== Upload UI: filename animation + drag/drop zone =====
+      const fileInput = document.getElementById("resume_file");
+      const uploadZone = document.getElementById("uploadZone");
+      const fileInfo = document.getElementById("fileInfo");
+
+      function renderSelectedFile(file) {
+        if (!file) {
+          fileInfo.classList.add("hidden");
+          fileInfo.innerHTML = "";
+          return;
+        }
+
+        // animated pill
+        fileInfo.classList.remove("hidden");
+        fileInfo.innerHTML = `
+          <div class="file-pill file-animate-in" aria-live="polite">
+            <span>📎</span>
+            <span class="name" title="${file.name}">${file.name}</span>
+            <button type="button" class="clear" aria-label="Clear selected file" onclick="clearSelectedFile()">×</button>
+          </div>
+        `;
+      }
+
+      function clearSelectedFile() {
+        fileInput.value = "";
+        renderSelectedFile(null);
+      }
+
+      // When file is chosen via picker
+      fileInput.addEventListener("change", () => {
+        const file = fileInput.files && fileInput.files[0];
+        renderSelectedFile(file || null);
+      });
+
+      // Drag & drop handling
+      function isValidDrag(e) {
+        // Avoid interfering with text dragging
+        return (
+          e.dataTransfer && Array.from(e.dataTransfer.types).includes("Files")
+        );
+      }
+
+      ["dragenter", "dragover"].forEach((evt) => {
+        uploadZone.addEventListener(evt, (e) => {
+          if (!isValidDrag(e)) return;
+          e.preventDefault();
+          e.stopPropagation();
+          uploadZone.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach((evt) => {
+        uploadZone.addEventListener(evt, (e) => {
+          if (!isValidDrag(e)) return;
+          e.preventDefault();
+          e.stopPropagation();
+          uploadZone.classList.remove("dragover");
+        });
+      });
+
+      uploadZone.addEventListener("drop", (e) => {
+        if (!isValidDrag(e)) return;
+
+        const droppedFiles = e.dataTransfer.files;
+        if (!droppedFiles || !droppedFiles.length) return;
+
+        // Only take the first file
+        const dt = new DataTransfer();
+        dt.items.add(droppedFiles[0]);
+        fileInput.files = dt.files;
+
+        renderSelectedFile(droppedFiles[0]);
+      });
+    </script>
+  </body>
 </html>
